@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.db.models import Sum
 
 class Admin(models.Model):
     users = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
