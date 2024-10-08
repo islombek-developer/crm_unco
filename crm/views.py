@@ -5,4 +5,4 @@ from django.db import IntegrityError
 from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Teacher,Admin,Month,Monthlypayment,Student,Day,Attendance,Group
-
+from rest_framework.generics import CreateAPIView,ListCreateAPIView
