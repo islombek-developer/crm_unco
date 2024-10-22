@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.db.models import Sum
 
-class Admin(models.Model):
+class User(models.Model):
     users = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
@@ -13,8 +13,10 @@ class Admin(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} --> {self.last_name}"
-
     
+
+
+
 class Teacher(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
@@ -41,7 +43,10 @@ class Student(models.Model):
     phone_number2 = models.CharField(max_length=150,null=True,blank=True)
     group = models.ForeignKey(Group,on_delete=models.CASCADE,related_name='stundet')
     group2 = models.ForeignKey(Group,on_delete=models.CASCADE,related_name='student2',null=True,blank=True)
-
+    
+    def __str__(self) -> str:
+        return f"{self.first_name} --> {self.last_name}"
+    
 class Day(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='days',null=True,blank=True)
     date = models.DateField(default=datetime.date.today)  

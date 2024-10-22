@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Teacher,Admin,Month,Monthlypayment,Student,Day,Attendance,Group
+from .models import Teacher,User,Month,Monthlypayment,Student,Day,Attendance,Group
 
-admin.site.register(Admin)
+admin.site.register(User)
 admin.site.register(Teacher)
 admin.site.register(Month)
 admin.site.register(Monthlypayment)
