@@ -17,7 +17,7 @@ class TeacherSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 class GroupSerializer(serializers.ModelSerializer):
-    teacher = TeacherSerializer(read_only=True)
+    # teacher = TeacherSerializer(read_only=True)
     teacher_id = serializers.PrimaryKeyRelatedField(
         queryset=Teacher.objects.all(),
         write_only=True,
@@ -26,7 +26,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ['id', 'name', 'start_date', 'end_date', 'teacher', 'teacher_id']
+        fields = ['id', 'name', 'start_date', 'end_date',  'teacher_id']
         read_only_fields = ['id', 'start_date', 'end_date']
 
 class StudentSerializer(serializers.ModelSerializer):
