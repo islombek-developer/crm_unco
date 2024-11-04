@@ -1,20 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser,User
 import datetime
 from django.db.models import Sum
 
-class User(models.Model):
-    users = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+class User(AbstractUser):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='profile_pics/default.jpg')
+    image = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     phone_number = models.CharField(max_length=13, blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.first_name} --> {self.last_name}"
-    
-
 
 
 class Teacher(models.Model):
