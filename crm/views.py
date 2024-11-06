@@ -84,6 +84,16 @@ class AttendanceViewSet(viewsets.ModelViewSet):
     search_fields = ['student__first_name', 'student__last_name']
     ordering_fields = ['date__date']
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        # SMS will be sent automatically via signal if status is False
+        return response
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        # SMS will be sent automatically via signal if status is False
+        return response
+    
     @action(detail=False, methods=['get'])
     def student_attendance(self, request):
         student_id = request.query_params.get('student_id')
@@ -139,14 +149,15 @@ class RegisterAPIView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+        user = serializer.save(is_staff=True)
         return Response({
             "user": {
                 "username": user.username,
                 "password": user.password,
+                "is_staff": user.is_staff 
             },
-            "message": "Account created successfully."
-        }, status=status.HTTP_201_CREATED)
+            "message": "Account created successfully"
+        },status=status.HTTP_201_CREATED)
     
 
 

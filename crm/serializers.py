@@ -143,17 +143,16 @@ class LoginSerializer(serializers.Serializer):
 
 User = get_user_model()
 class RegisterSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=15)
-    password = serializers.CharField(required=True, write_only=True)
-
     class Meta:
-        model = User  
-        fields = ('username', 'password', 'first_name','image', 'last_name')  
+        model = User
+        fields = ('username', 'password', 'is_staff')
+        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User(
+        user = User.objects.create_user(
             username=validated_data['username'],
+            password=validated_data['password'],
+            is_staff=validated_data.get('is_staff', True)  
         )
-        user.set_password(validated_data['password'])
-        user.save()
         return user
+

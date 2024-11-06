@@ -36,8 +36,8 @@ class Group(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    phone_number = models.CharField(max_length=150)
-    phone_number2 = models.CharField(max_length=150,null=True,blank=True)
+    phone_number = models.CharField(max_length=150 ,help_text="Format: +998XXXXXXXXX")
+    phone_number2 = models.CharField(max_length=150,null=True,blank=True,help_text="Format: +998XXXXXXXXX")
     group = models.ForeignKey(Group,on_delete=models.CASCADE,related_name='stundet')
     group2 = models.ForeignKey(Group,on_delete=models.CASCADE,related_name='student2',null=True,blank=True)
     
