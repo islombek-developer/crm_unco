@@ -86,12 +86,10 @@ class AttendanceViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        # SMS will be sent automatically via signal if status is False
         return response
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
-        # SMS will be sent automatically via signal if status is False
         return response
     
     @action(detail=False, methods=['get'])
@@ -160,22 +158,37 @@ class RegisterAPIView(generics.CreateAPIView):
         },status=status.HTTP_201_CREATED)
     
 
-
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True) 
+        serializer.is_valid(raise_exception=True)
         username = serializer.validated_data['username']
         password = serializer.validated_data['password']
-        user = authenticate(request, username=username, password=password)
+
+        print(f"Login attempt: {username}")
+
+     
+        user = authenticate(username=username, password=password)
 
         if user is not None:
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
-            })
-        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            if user.is_staff:
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    'username': user.username,
+                    'is_staff': user.is_staff
+                }, status=status.HTTP_200_OK)
+            
+            return Response(
+                {'error': 'Staff huquqlari mavjud emas'}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        return Response(
+            {'error': 'Login yoki parol noto\'g\'ri'}, 
+            status=status.HTTP_401_UNAUTHORIZED
+        )

@@ -136,8 +136,8 @@ class MonthlypaymentSerializer(serializers.ModelSerializer):
         return Monthlypayment.total_oylik_for_month(obj.month.id)
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
 
 
